@@ -49,3 +49,41 @@ public class ObjectDemo{
 ```
 
 >java.lang.String的intern()方法"abc".intern()方法的返回值还是字符串"abc"，表面上看起来好像这个方法没什么用处。但实际上，它做了个小动作：检查字符串池里是否存在"abc"这么一个字符串，如果存在，就返回池里的字符串；如果不存在，该方法会 把"abc"添加到字符串池中，然后再返回它的引用。
+
+### HashSet 与 HashMap 的区别
+
+HashSet实现了Set接口，它不允许集合中有重复的值。仅仅存储对象。
+HashSet中元素的两个关键方法hashCode和equals方法。add()
+
+HashMap实现了Map接口，Map接口对键值对进行映射。Map不允许重复的键。Map接口有两个基本的实现，HashMap和TreeMap。TreeMap保存了对象的排列次序，而HashMap则不能。HashMap允许键和值为null。put()
+
+
+## Java Test
+
+Java默认提供的三个ClassLoader是BootStrap ClassLoader，Extension ClassLoader，APP ClassLoader
+
+ClassLoader使用的是双亲委托模型来搜索类的
+
+JVM在判定两个class是否相同时，不仅要判断两个类名是否相同，而且要判断是否由同一个类加载器实例加载的。
+
+ClassLoader就是用来动态加载class文件到内存当中用的。
+
+JVM堆分为：新生代（一般是一个Eden区，两个Survivor区），老年代（old区）。常量池属于PermGen（方法区）
+
+Java 语言性特点
+- Java致力于检查程序在编译和运行时的错误。
+- Java虚拟机实现了跨平台接口
+- Java操纵内存减少了内存出错的可能性
+- Java还实现了真数组，避免覆盖数据的可能
+
+Java 真数组
+- 在内存中连续分配。
+- 数组所存在的内存空间为数组专用，避免了数据被覆盖的问题。
+- 数组内存放的类型是确定的，唯一的。
+
+会话跟踪技术
+
+- Cookie是Web服务器发送给客户端的一小段消息，客户端请求时，可以读取该消息发送到服务器端
+- 关闭浏览器意味着临时会话ID丢失，但所有与原会话关联的会话数据仍保留在服务器上，自至会话过期
+- 在禁用Cookie时可以使用URL重写技术跟踪会话
+- 隐藏域在页面中对于用户（浏览器）是不可见的，在表单中插入隐藏域的目的在于收集或发送信息，以利于被处理表单的程序所使用。浏览者单击发送按钮发送表单时候，隐藏域的信息也被一起发送到服务器。
