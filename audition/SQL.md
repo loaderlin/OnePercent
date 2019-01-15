@@ -89,6 +89,93 @@ WHERE
 	a.id = b.id
 ```
 
+Oracle 查询优化
+
+```sql
+create table rocky_emp(
+	id number(11) primary key,
+	emp_no number(11) null,
+	epm_name varchar2(64 byte) null, 
+	job varchar2(32 byte) null, 
+	mgr number(11) null,
+	hiredate date  null,
+	sal number(18, 8) null,
+	comm number(18, 8) null,
+	deptno number(11) null, 
+
+	tenancy number(11) null,
+	creator varchar2(32 byte)  null ,
+	create_time date  null ,
+	modifier varchar2(32 byte) null ,
+	modify_time date  null ,
+	rec_ver number(11) null ,
+	company_id varchar2(32 byte) null 
+)
+logging
+nocompress
+nocache;
+comment on table rocky_emp is '薪资结构表';
+comment on column rocky_emp.id is '主键';
+comment on column rocky_emp.emp_no is '编号';
+comment on column rocky_emp.epm_name is '名称';
+comment on column rocky_emp.job is '工作';
+comment on column rocky_emp.mgr is '主管';
+comment on column rocky_emp.hiredate is '聘用日期';
+comment on column rocky_emp.sal is '工资';
+comment on column rocky_emp.comm is '提成';
+comment on column rocky_emp.deptno is '部门编码';
+
+comment on column rocky_emp.tenancy is 'tenancy';
+comment on column rocky_emp.creator is '创建人';
+comment on column rocky_emp.create_time is '创建时间';
+comment on column rocky_emp.modifier is '修改人';
+comment on column rocky_emp.modify_time is '修改时间';
+comment on column rocky_emp.rec_ver is '版本';
+comment on column rocky_emp.company_id is '公司id';
+-- 序列
+create sequence seq_rocky_emp
+minvalue 1 maxvalue 99999999999999
+start with 100 increment by 1 cache 20;	
+```
+
+基础篇
+
+```sql
+is (not) null  -- 查找空值
+
+rownum -- 限制返回行数
+
+coalesce(c1, c2, c3, c4, c5) -- 返回多个值中第一个不为空的值 <==> nvl(nvl(nvl(nvl(c1, c2), c3), c4), c5)
+
+select name || ' 的工作是 ' || job as msg  from emp -- 拼接列
+```
+
+在where子句中引用取别名的列
+
+```sql
+select *
+from (select sal as a_asl,comm as a_comm from emp) x
+where a_asl < 1000;
+```
+
+select中使用逻辑条件
+
+```sql
+select grade, count(*)
+from (
+select(
+	case 
+		when sal <= 1000 then '0-1000'
+		when sal <= 2000 then '1000-2000'
+		when sal <= 3000 then '2000-3000'
+		when sal <= 5000 then '3000-5000'
+		when sal <= 8000 then '5000-8000'
+	else '好高啊' end
+) as grade, epm_name, sal from ROCKY_EMP) x
+group by grade
+order by 1
+```
+
 数据库的三级模式结构，它包括外模式，概念模式，内模式，有效地组织，管理数据，提高了数据库的逻辑独立性和物理独立性。
 
 在SQL语言中，我们可以使用两个通配符%和_，其中"%"表示0个或多个字符，而"_"则表示一个字符。
