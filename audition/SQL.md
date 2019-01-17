@@ -95,7 +95,7 @@ Oracle 查询优化
 create table rocky_emp(
 	id number(11) primary key,
 	emp_no number(11) null,
-	epm_name varchar2(64 byte) null, 
+	emp_name varchar2(64 byte) null, 
 	job varchar2(32 byte) null, 
 	mgr number(11) null,
 	hiredate date  null,
@@ -117,7 +117,7 @@ nocache;
 comment on table rocky_emp is '薪资结构表';
 comment on column rocky_emp.id is '主键';
 comment on column rocky_emp.emp_no is '编号';
-comment on column rocky_emp.epm_name is '名称';
+comment on column rocky_emp.emp_name is '名称';
 comment on column rocky_emp.job is '工作';
 comment on column rocky_emp.mgr is '主管';
 comment on column rocky_emp.hiredate is '聘用日期';
@@ -148,6 +148,15 @@ rownum -- 限制返回行数
 coalesce(c1, c2, c3, c4, c5) -- 返回多个值中第一个不为空的值 <==> nvl(nvl(nvl(nvl(c1, c2), c3), c4), c5)
 
 select name || ' 的工作是 ' || job as msg  from emp -- 拼接列
+
+SUBSTR(str, pos, len) -- 截取某个字段值的 substr
+
+TRANSLATE(expr, from_string, to_string) -- 替换 translate
+
+Oracle 默认排序空值在后面
+order by nulls first 
+order by nulls last
+
 ```
 
 在where子句中引用取别名的列
@@ -175,6 +184,63 @@ select(
 group by grade
 order by 1
 ```
+
+随机返回N条语句
+
+先随机再取数据
+
+```sql
+SELECT * FROM (select * from ROCKY_EMP ORDER by dbms_random.value()) where ROWNUM <= 3;
+```
+
+自关联
+
+```sql
+select 员工.empno, 员工.ename, 员工.mgr, 主管.empno, 主管.ename 
+from emp 员工
+left join emp 主管 on (员工.mgr = 主管.empno)
+order by 1;
+
+```
+
+
+```sql
+create table rocky_emp_bonus(
+	id number(11) primary key,
+	emp_no number(11) null,
+	received date  null,
+	type number(18, 8) null,
+
+	tenancy number(11) null,
+	creator varchar2(32 byte)  null ,
+	create_time date  null ,
+	modifier varchar2(32 byte) null ,
+	modify_time date  null ,
+	rec_ver number(11) null ,
+	company_id varchar2(32 byte) null 
+)
+logging
+nocompress
+nocache;
+comment on table rocky_emp_bonus is '奖金表';
+comment on column rocky_emp_bonus.id is '主键';
+comment on column rocky_emp_bonus.emp_no is '编号';
+comment on column rocky_emp_bonus.received is '接受时间';
+comment on column rocky_emp_bonus.type is '奖金类型';
+
+comment on column rocky_emp_bonus.tenancy is 'tenancy';
+comment on column rocky_emp_bonus.creator is '创建人';
+comment on column rocky_emp_bonus.create_time is '创建时间';
+comment on column rocky_emp_bonus.modifier is '修改人';
+comment on column rocky_emp_bonus.modify_time is '修改时间';
+comment on column rocky_emp_bonus.rec_ver is '版本';
+comment on column rocky_emp_bonus.company_id is '公司id';
+-- 序列
+create sequence seq_rocky_emp_bonus
+minvalue 1 maxvalue 99999999999999
+start with 100 increment by 1 cache 20;	
+```
+
 
 数据库的三级模式结构，它包括外模式，概念模式，内模式，有效地组织，管理数据，提高了数据库的逻辑独立性和物理独立性。
 
