@@ -145,6 +145,8 @@ is (not) null  -- 查找空值
 
 rownum -- 限制返回行数
 
+listagg(ename, ',') within group(order by ename)  -- 将字符串连接起来
+
 coalesce(c1, c2, c3, c4, c5) -- 返回多个值中第一个不为空的值 <==> nvl(nvl(nvl(nvl(c1, c2), c3), c4), c5)
 
 select name || ' 的工作是 ' || job as msg  from emp -- 拼接列
@@ -153,10 +155,27 @@ SUBSTR(str, pos, len) -- 截取某个字段值的 substr
 
 TRANSLATE(expr, from_string, to_string) -- 替换 translate
 
+translate(r.emp_name, '1AEIOU', '1') <==> regexp_replace(r.emp_name, '[AEIOU]')
+
 Oracle 默认排序空值在后面
 order by nulls first 
 order by nulls last
 
+字符串文字中包含引号
+select * from ROCKY_EMP r where r.EMP_NAME = q'[g'day mate]'
+
+计算字符在字符串中出现个次数
+
+select regexp_count(r.EMP_NAME, '''\$') from ROCKY_EMP r where r.EMP_NAME = q'[g'$day mate aaa]'
+
+regexp_like 正则表达式
+
+regexp_like(str, '16*')
+
+
+regexp_substr(v.name, '[^.]+', 1, 2)
+匹配不包含.的多个字符           长度 位置
+192.168.0.104 ===>>> 168
 ```
 
 在where子句中引用取别名的列
@@ -241,6 +260,53 @@ minvalue 1 maxvalue 99999999999999
 start with 100 increment by 1 cache 20;	
 ```
 
+聚集与连接
+
+左连接时 右表有多条数据，左表也要显示多条数据
+先聚集 奖金累加 0.3 然后乘以基本工资再求和
+
+```sql
+SELECT
+	e.DEPTNO,
+	sum(e.sal),
+	sum(e.sal * eb2.rate) 
+FROM
+	ROCKY_EMP e
+LEFT JOIN (
+	SELECT
+		eb.EMP_NO,
+		sum(
+			CASE
+				WHEN eb.type = 1 THEN
+				0.1 
+				WHEN eb.type = 2 THEN
+				0.2 
+				WHEN eb.type = 3 THEN
+				0.3 
+			END 
+		) AS rate 
+	FROM
+		ROCKY_EMP_BONUS eb 
+	GROUP BY eb.EMP_NO ) eb2 ON e.EMP_NO = eb2.EMP_NO 
+GROUP BY e.DEPTNO
+```
+
+提取首字母
+
+```sql
+select UPPER(substr(regexp_replace(r.EMP_NAME, '([[:alpha:]])(.*)', '\1'), 1, 1)) || LOWER(SUBSTR(regexp_replace(r.EMP_NAME, '([[:alpha:]])(.*)', '.\2'),1)) as Emp_name from ROCKY_EMP r;
+
+<==>
+
+select regexp_replace(INITCAP(r.EMP_NAME), '([[:alpha:]])(.*)', '\1.\2') as Emp_name from ROCKY_EMP r;
+
+更新
+
+update ROCKY_EMP r
+set r.EMP_NAME = 
+(select regexp_replace(INITCAP(r.EMP_NAME), '([[:alpha:]])(.*)', '\1.\2') as Emp_name from ROCKY_EMP rs where r.EMP_NO = rs.EMP_NO)
+where r.EMP_NAME is not null
+```
 
 数据库的三级模式结构，它包括外模式，概念模式，内模式，有效地组织，管理数据，提高了数据库的逻辑独立性和物理独立性。
 
