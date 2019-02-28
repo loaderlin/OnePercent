@@ -308,6 +308,21 @@ set r.EMP_NAME =
 where r.EMP_NAME is not null
 ```
 
+SQL查询某一字段唯一值及其记录条数的语句
+
+```sql
+select t.user_name, count(t.user_name) from SYS_USER t group by t.user_name
+```
+
+## 实战
+
+根据 数据字典 直接更新 证件表的Code
+```sql
+update CS_CERTIFICATE t
+set t.CERTIFICATE_CODE = (
+	select s.DS_CODE from SYS_DICT_SPEC s where s.DS_VALUE = t.CERTIFICATE_NAME
+)
+```
 数据库的三级模式结构，它包括外模式，概念模式，内模式，有效地组织，管理数据，提高了数据库的逻辑独立性和物理独立性。
 
 在SQL语言中，我们可以使用两个通配符%和_，其中"%"表示0个或多个字符，而"_"则表示一个字符。
