@@ -89,7 +89,7 @@ WHERE
 	a.id = b.id
 ```
 
-Oracle 查询优化
+## Oracle 查询优化
 
 ```sql
 create table rocky_emp(
@@ -308,13 +308,19 @@ set r.EMP_NAME =
 where r.EMP_NAME is not null
 ```
 
+生成累积和
+
+```sql
+
+```
+
+## 实战
+
 SQL查询某一字段唯一值及其记录条数的语句
 
 ```sql
 select t.user_name, count(t.user_name) from SYS_USER t group by t.user_name
 ```
-
-## 实战
 
 根据 数据字典 直接更新 证件表的Code
 ```sql
@@ -323,6 +329,48 @@ set t.CERTIFICATE_CODE = (
 	select s.DS_CODE from SYS_DICT_SPEC s where s.DS_VALUE = t.CERTIFICATE_NAME
 )
 ```
+
+获取 数据字典中的Code 显示
+
+```sql
+SELECT
+	t.PARTS_CODE as 配件编码,
+	t.PARTS_NAME as 配件名称,
+	( SELECT y.DS_VALUE FROM SYS_DICT_SPEC y WHERE y.DS_TYPE = 'parts_type' AND y.DS_CODE = t.PARTS_TYPE ) as 配件类型
+FROM
+	"CS_PARTS_RECLAIM" t
+```
+
+生成累计
+
+```sql
+SELECT
+	f.id,
+	TOTAL_AMOUNT as 单条合计,
+	sum( TOTAL_AMOUNT ) over ( ORDER BY f.id ) AS 成本累计 
+FROM
+	"CS_DISPATCH_FEE" f 
+WHERE
+	fee_name = '运费' 
+ORDER BY
+	f.id
+```
+
+计算备用金 
+
+```sql
+SELECT
+	t.driver_id,
+	sum( CASE WHEN t.OPERATE_TYPE = '10' THEN - t.TOTAL_AMOUNT ELSE t.TOTAL_AMOUNT END ) 
+FROM
+	CS_SPARE_MONEY_LOG t 
+GROUP BY
+	t.DRIVER_ID 
+ORDER BY
+	t.driver_id
+```
+
+
 数据库的三级模式结构，它包括外模式，概念模式，内模式，有效地组织，管理数据，提高了数据库的逻辑独立性和物理独立性。
 
 在SQL语言中，我们可以使用两个通配符%和_，其中"%"表示0个或多个字符，而"_"则表示一个字符。
