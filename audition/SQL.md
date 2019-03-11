@@ -308,10 +308,19 @@ set r.EMP_NAME =
 where r.EMP_NAME is not null
 ```
 
-生成累积和
+生成累计
 
 ```sql
-
+SELECT
+	f.id,
+	TOTAL_AMOUNT as 单条合计,
+	sum( TOTAL_AMOUNT ) over ( ORDER BY f.id ) AS 成本累计 
+FROM
+	"CS_DISPATCH_FEE" f 
+WHERE
+	fee_name = '运费' 
+ORDER BY
+	f.id
 ```
 
 ## 实战
@@ -339,21 +348,6 @@ SELECT
 	( SELECT y.DS_VALUE FROM SYS_DICT_SPEC y WHERE y.DS_TYPE = 'parts_type' AND y.DS_CODE = t.PARTS_TYPE ) as 配件类型
 FROM
 	"CS_PARTS_RECLAIM" t
-```
-
-生成累计
-
-```sql
-SELECT
-	f.id,
-	TOTAL_AMOUNT as 单条合计,
-	sum( TOTAL_AMOUNT ) over ( ORDER BY f.id ) AS 成本累计 
-FROM
-	"CS_DISPATCH_FEE" f 
-WHERE
-	fee_name = '运费' 
-ORDER BY
-	f.id
 ```
 
 计算备用金 
