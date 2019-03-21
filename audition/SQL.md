@@ -1,41 +1,43 @@
+# SQL
+
 B - (A ∩ B)
 
 ```sql
 SELECT
-	b.*
+    b.*
 FROM
-	B_table b
+    B_table b
 LEFT JOIN A_table a ON b.Bid = a.Bid
 WHERE
-	a.Aid IS NULL
+     a.Aid IS NULL
 
 SELECT
-	b.*
+    b.*
 FROM
-	B_table b
+    B_table b
 WHERE
-	b.Bid NOT IN (
-		SELECT
-			b.Bid
-		FROM
-			B_table b
-		INNER JOIN A_table a ON b.Bid = a.Bid
-	)
+    b.Bid NOT IN (
+        SELECT
+            b.Bid
+        FROM
+            B_table b
+        INNER JOIN A_table a ON b.Bid = a.Bid
+    )
 ```
 平均分大于80分的学生，并按平均分分数从大到小排列
 
 ```sql
 SELECT
-	t.student_name,
-	avg(t.score)
+    t.student_name,
+    avg(t.score)
 FROM
-	course t
+    course t
 GROUP BY
-	t.student_id
+    t.student_id
 HAVING
-	avg(t.score) > 80
+    avg(t.score) > 80
 ORDER BY
-	avg(t.score) DESC
+    avg(t.score) DESC
 ```
 
 Oracle SQL: Update a table with data from another table
@@ -43,23 +45,23 @@ Oracle SQL: Update a table with data from another table
 ```sql
 UPDATE table1 t1
 SET (NAME, DESC) = (
-	SELECT
-		t2. NAME,
-		t2. DESC
-	FROM
-		table2 t2
-	WHERE
-		t1. ID = t2. ID
+    SELECT
+        t2. NAME,
+        t2. DESC
+    FROM
+        table2 t2
+    WHERE
+        t1. ID = t2. ID
 )
 WHERE
-	EXISTS (
-		SELECT
-			1
-		FROM
-			table2 t2
-		WHERE
-			t1. ID = t2. ID
-	)
+    EXISTS (
+        SELECT
+            1
+        FROM
+            table2 t2
+        WHERE
+            t1. ID = t2. ID
+    )
 
 update t1 
 set t1.colmun = t2.column
@@ -68,13 +70,13 @@ where t1.id = t2.id
 
 UPDATE CS_ORDER o
 SET (o.CUSTOMER_ID) = (
-	SELECT
-		c. ID
-	FROM
-		CS_CUSTOMER c
-	WHERE
-		o.CUSTOMER_CODE = c.CUSTOMER_CODE
-		and c.company_id = o.company_id
+    SELECT
+        c. ID
+    FROM
+        CS_CUSTOMER c
+    WHERE
+        o.CUSTOMER_CODE = c.CUSTOMER_CODE
+        and c.company_id = o.company_id
 )
 WHERE o.CUSTOMER_ID IS NULL
 ```
@@ -86,30 +88,30 @@ UPDATE a_table a,
  b_table b
 SET a. CODE = b. CODE
 WHERE
-	a.id = b.id
+    a.id = b.id
 ```
 
 ## Oracle 查询优化
 
 ```sql
 create table rocky_emp(
-	id number(11) primary key,
-	emp_no number(11) null,
-	emp_name varchar2(64 byte) null, 
-	job varchar2(32 byte) null, 
-	mgr number(11) null,
-	hiredate date  null,
-	sal number(18, 8) null,
-	comm number(18, 8) null,
-	deptno number(11) null, 
+    id number(11) primary key,
+    emp_no number(11) null,
+    emp_name varchar2(64 byte) null, 
+    job varchar2(32 byte) null, 
+    mgr number(11) null,
+    hiredate date  null,
+    sal number(18, 8) null,
+    comm number(18, 8) null,
+    deptno number(11) null, 
 
-	tenancy number(11) null,
-	creator varchar2(32 byte)  null ,
-	create_time date  null ,
-	modifier varchar2(32 byte) null ,
-	modify_time date  null ,
-	rec_ver number(11) null ,
-	company_id varchar2(32 byte) null 
+    tenancy number(11) null,
+    creator varchar2(32 byte)  null ,
+    create_time date  null ,
+    modifier varchar2(32 byte) null ,
+    modify_time date  null ,
+    rec_ver number(11) null ,
+    company_id varchar2(32 byte) null 
 )
 logging
 nocompress
@@ -135,7 +137,7 @@ comment on column rocky_emp.company_id is '公司id';
 -- 序列
 create sequence seq_rocky_emp
 minvalue 1 maxvalue 99999999999999
-start with 100 increment by 1 cache 20;	
+start with 100 increment by 1 cache 20;    
 ```
 
 基础篇
@@ -192,13 +194,13 @@ select中使用逻辑条件
 select grade, count(*)
 from (
 select(
-	case 
-		when sal <= 1000 then '0-1000'
-		when sal <= 2000 then '1000-2000'
-		when sal <= 3000 then '2000-3000'
-		when sal <= 5000 then '3000-5000'
-		when sal <= 8000 then '5000-8000'
-	else '好高啊' end
+    case
+        when sal <= 1000 then '0-1000'
+        when sal <= 2000 then '1000-2000'
+        when sal <= 3000 then '2000-3000'
+        when sal <= 5000 then '3000-5000'
+        when sal <= 8000 then '5000-8000'
+    else '好高啊' end
 ) as grade, epm_name, sal from ROCKY_EMP) x
 group by grade
 order by 1
@@ -222,21 +224,20 @@ order by 1;
 
 ```
 
-
 ```sql
 create table rocky_emp_bonus(
-	id number(11) primary key,
-	emp_no number(11) null,
-	received date  null,
-	type number(18, 8) null,
+    id number(11) primary key,
+    emp_no number(11) null,
+    received date  null,
+    type number(18, 8) null,
 
-	tenancy number(11) null,
-	creator varchar2(32 byte)  null ,
-	create_time date  null ,
-	modifier varchar2(32 byte) null ,
-	modify_time date  null ,
-	rec_ver number(11) null ,
-	company_id varchar2(32 byte) null 
+    tenancy number(11) null,
+    creator varchar2(32 byte)  null ,
+    create_time date  null ,
+    modifier varchar2(32 byte) null ,
+    modify_time date  null ,
+    rec_ver number(11) null ,
+    company_id varchar2(32 byte) null 
 )
 logging
 nocompress
@@ -257,7 +258,7 @@ comment on column rocky_emp_bonus.company_id is '公司id';
 -- 序列
 create sequence seq_rocky_emp_bonus
 minvalue 1 maxvalue 99999999999999
-start with 100 increment by 1 cache 20;	
+start with 100 increment by 1 cache 20;    
 ```
 
 聚集与连接
@@ -267,27 +268,27 @@ start with 100 increment by 1 cache 20;
 
 ```sql
 SELECT
-	e.DEPTNO,
-	sum(e.sal),
-	sum(e.sal * eb2.rate) 
+    e.DEPTNO,
+    sum(e.sal),
+    sum(e.sal * eb2.rate) 
 FROM
-	ROCKY_EMP e
+    ROCKY_EMP e
 LEFT JOIN (
-	SELECT
-		eb.EMP_NO,
-		sum(
-			CASE
-				WHEN eb.type = 1 THEN
-				0.1 
-				WHEN eb.type = 2 THEN
-				0.2 
-				WHEN eb.type = 3 THEN
-				0.3 
-			END 
-		) AS rate 
-	FROM
-		ROCKY_EMP_BONUS eb 
-	GROUP BY eb.EMP_NO ) eb2 ON e.EMP_NO = eb2.EMP_NO 
+    SELECT
+        eb.EMP_NO,
+        sum(
+            CASE
+                WHEN eb.type = 1 THEN
+                0.1 
+                WHEN eb.type = 2 THEN
+                0.2 
+                WHEN eb.type = 3 THEN
+                0.3 
+            END 
+        ) AS rate 
+    FROM
+        ROCKY_EMP_BONUS eb 
+    GROUP BY eb.EMP_NO ) eb2 ON e.EMP_NO = eb2.EMP_NO 
 GROUP BY e.DEPTNO
 ```
 
@@ -312,15 +313,15 @@ where r.EMP_NAME is not null
 
 ```sql
 SELECT
-	f.id,
-	TOTAL_AMOUNT as 单条合计,
-	sum( TOTAL_AMOUNT ) over ( ORDER BY f.id ) AS 成本累计 
+    f.id,
+    TOTAL_AMOUNT as 单条合计,
+    sum( TOTAL_AMOUNT ) over ( ORDER BY f.id ) AS 成本累计 
 FROM
-	"CS_DISPATCH_FEE" f 
+    "CS_DISPATCH_FEE" f 
 WHERE
-	fee_name = '运费' 
+    fee_name = '运费' 
 ORDER BY
-	f.id
+    f.id
 ```
 
 ## 实战
@@ -335,7 +336,7 @@ select t.user_name, count(t.user_name) from SYS_USER t group by t.user_name
 ```sql
 update CS_CERTIFICATE t
 set t.CERTIFICATE_CODE = (
-	select s.DS_CODE from SYS_DICT_SPEC s where s.DS_VALUE = t.CERTIFICATE_NAME
+    select s.DS_CODE from SYS_DICT_SPEC s where s.DS_VALUE = t.CERTIFICATE_NAME
 )
 ```
 
@@ -343,34 +344,46 @@ set t.CERTIFICATE_CODE = (
 
 ```sql
 SELECT
-	t.PARTS_CODE as 配件编码,
-	t.PARTS_NAME as 配件名称,
-	( SELECT y.DS_VALUE FROM SYS_DICT_SPEC y WHERE y.DS_TYPE = 'parts_type' AND y.DS_CODE = t.PARTS_TYPE ) as 配件类型
+    t.PARTS_CODE as 配件编码,
+    t.PARTS_NAME as 配件名称,
+    ( SELECT y.DS_VALUE FROM SYS_DICT_SPEC y WHERE y.DS_TYPE = 'parts_type' AND y.DS_CODE = t.PARTS_TYPE ) as 配件类型
 FROM
-	"CS_PARTS_RECLAIM" t
+    "CS_PARTS_RECLAIM" t
 ```
 
-计算备用金 
+计算备用金
 
 ```sql
 SELECT
-	t.driver_id,
-	sum( CASE WHEN t.OPERATE_TYPE = '10' THEN - t.TOTAL_AMOUNT ELSE t.TOTAL_AMOUNT END ) 
+    t.driver_id,
+    sum( CASE WHEN t.OPERATE_TYPE = '10' THEN - t.TOTAL_AMOUNT ELSE t.TOTAL_AMOUNT END )
 FROM
-	CS_SPARE_MONEY_LOG t 
+    CS_SPARE_MONEY_LOG t
 GROUP BY
-	t.DRIVER_ID 
+    t.DRIVER_ID
 ORDER BY
-	t.driver_id
+    t.driver_id
 ```
 
+Insert Into
+
+```sql
+INSERT INTO
+A_table (Id, vehicle_no ...)
+SELECT
+SEQ_A_table.nextval, x.vehicle_no
+FROM
+(
+    select xxx as vehicle_no
+    from A_table
+) x
+```
 
 数据库的三级模式结构，它包括外模式，概念模式，内模式，有效地组织，管理数据，提高了数据库的逻辑独立性和物理独立性。
 
 在SQL语言中，我们可以使用两个通配符%和_，其中"%"表示0个或多个字符，而"_"则表示一个字符。
 
 数据独立性是指应用程序和数据结构之间相互独立，互不影响。在三层模式体系结构中数据独立性是指数据库系统在某一层次模式上的改变上不会使它的上一层模式也发生改变的能力
-
 
 1. 概念结构设计。这是数据库设计的第一个阶段，在管理信息系统的分析阶段，已经得到了系统的数据流程图和数据字典，现在要结合数据规范化的理论，用一种数据模型将用户的数据需求明确地表示出来。
 
@@ -380,7 +393,6 @@ ORDER BY
 
 3. 物理结构设计。为一个确定的逻辑数据模型选择一个最适合应用要求的物理结构的过程，就叫做数据库的物理结构设计。数据库在物理设备上的存储结构和存取方法称为数据库的物理数据模型。
 
-
 - 避免活锁： 先来先服务
 - 防止死锁： 一次封锁，顺序封锁
 
@@ -388,12 +400,11 @@ ORDER BY
 
 如果事务T1封锁了数据R，事务T2又请求封锁R，于是T2等待。T3也请求封锁R，当T1释放了R上的封锁之后系统首先批准了T3的请求，T2仍然等待。然后T4又请求封锁R，当T3释放了R上的封锁之后系统又批准了T4的请求，...，T2有可能永远等待，这就是活锁的情形，如图8.4(a)所示。 避免活锁的简单方法是采用先来先服务的策略。
 
-
 2. 死锁
 
 如果事务T1封锁了数据R1，T2封锁了数据R2，然后T1又请求封锁R2，因T2已封锁了R2，于是T1等待T2释放R2上的锁。接着T2又申请封锁R1，因T1已封锁了R1，T2也只能等待T1释放R1上的锁。这样就出现了T1在等待T2，而T2又在等待T1的局面，T1和T2两个事务永远不能结束，形成死锁。
 
-#### 死锁的预防
+### 死锁的预防
 
 在数据库中，产生死锁的原因是两个或多个事务都已封锁了一些数据对象，然后又都请求对已为其他事务封锁的数据对象加锁，从而出现死等待。防止死锁的发生其实就是要破坏产生死锁的条件。预防死锁通常有两种方法：
 
@@ -404,7 +415,6 @@ ORDER BY
 - 顺序封锁法
 
 顺序封锁法是预先对数据对象规定一个封锁顺序，所有事务都按这个顺序实行封锁。 顺序封锁法可以有效地防止死锁，但也同样存在问题。事务的封锁请求可以随着事务的执行而动态地决定，很难事先确定每一个事务要封锁哪些对象，因此也就很难按规定的顺序去施加封锁。 可见，在操作系统中广为采用的预防死锁的策略并不很适合数据库的特点，因此DBMS在解决死锁的问题上普遍采用的是诊断并解除死锁的方法。
-
 
 #### 死锁的诊断与解除
 
@@ -423,20 +433,19 @@ ORDER BY
 - 数据独立性高
 - 数据由DBMS统一管理和控制
 
-
 在关系模型中,关系完整性主要是指以下三方面：
 
-1. 实体完整性
+- 实体完整性
 
 所谓的实体完整性就是指关系(所谓的关系就是表)的主码不能取空值；
 比如学生表的主码通常是取学号为主码
 
-2. 参照完整性
+- 参照完整性
 
 是指参照关系中每个元素的外码要么为空(NULL),要么等于被参照关系中某个元素的主码；
 比如今天是9月2日是开学日,大学新生刚来报道,在学生表里,有的学生可能还没来得及分配具体的班,所以这些还未来得及分班的学生教务处可以在学生表里的班级属性取空值NULL(空值代表“不确定”),而哪些已分了班的学生就必须取班级表里的某些属性,比如班级类别,即学生属于哪个班.比如取“软件工程”,”计算机技术应用“等等.
 参照关系也称为外键表,被参照关系也称为主键表.
 
-3. 用户定义的完整性
+- 用户定义的完整性
 
 指对关系中每个属性的取值作一个限制(或称为约束)的具体定义.比如 性别属性只能取”男“或”女“ ,再就是年龄的取值范围,可以取值0-130 ,但不能取负数,因为年龄不可能是负数.

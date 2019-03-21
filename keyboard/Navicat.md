@@ -1,15 +1,15 @@
 
-## 快捷键
+# 快捷键
 
-Ctrl+D 表的结构设计界面 
+Ctrl+D 表的结构设计界面
 
-Ctrl+O 切换回数据内容显示页 
+Ctrl+O 切换回数据内容显示页
 
-Ctrl+Q 表查询（打开查询窗口） 
+Ctrl+Q 表查询（打开查询窗口）
 
-Ctrl+N 新开一个查询窗口 
+Ctrl+N 新开一个查询窗口
 
-Ctrl+W 关闭当前查询窗口 
+Ctrl+W 关闭当前查询窗口
 
 ## 导数据
 
@@ -33,7 +33,7 @@ Ctrl+W 关闭当前查询窗口
 
 > 但是导出的文件是各个数据表中的数据，而不是一整个数据库的数据
 
-1. 使用Python脚本将这些Sql文件合成一个Sql文件
+- 使用Python脚本将这些Sql文件合成一个Sql文件
 
 ```python
 #! /usr/bin/python
@@ -53,11 +53,11 @@ for file in files:       #遍历文件夹
         s.append(str + '\n')    #每个文件的文本存到list中
 # 新的sql文件
 with open('gas.sql', 'w+') as fs:
-	for line in s:
-		fs.write(line)
+    for line in s:
+        fs.write(line)
 ```
 
-2. 直接使用Linux命令行将这些Sql文件合并成一个Sql文件
+- 直接使用Linux命令行将这些Sql文件合并成一个Sql文件
 
 ```sh
 cat /home/rocky/sql/* >> gas.sql
@@ -65,21 +65,19 @@ cat /home/rocky/sql/* >> gas.sql
 
 #### 导入
 
-1. 载入
+- 载入
 
-- 打开目标数据库
-- Ctrl+Q 表查询（打开查询窗口）
-- 点击载入（选择Sql文件，运行）
+1. 打开目标数据库
+2. Ctrl+Q 表查询（打开查询窗口）
+3. 点击载入（选择Sql文件，运行）
 
 ![载入](https://raw.githubusercontent.com/loaderlin/OnePercent/master/img/infile-onload.png)
 
-**这种方式有个弊端是数据多的话会出现out of memory**
+>这种方式有个弊端是数据多的话会出现out of memory
 
-2. 运行Sql文件
-
+- 运行Sql文件
 
 ![运行Sql文件](https://raw.githubusercontent.com/loaderlin/OnePercent/master/img/infile-runsqlfile.png)
-
 
 ### 直接使用Navicat的数据传输
 
@@ -88,3 +86,20 @@ cat /home/rocky/sql/* >> gas.sql
 #### 参考
 
 [linux文件合并，去重，分割](https://www.cnblogs.com/giraffe/p/3193085.html)
+
+# DBeaver
+
+## DBeaver快捷键
+
+Ctrl + Shift + F 格式化SQL
+
+Alt + X 执行SQL
+
+F3 新建SQL查询
+
+## 设置手动提交
+
+![设置DBeaver手动提交](https://raw.githubusercontent.com/loaderlin/OnePercent/master/img/manual_commit.png)
+
+[
+解决Win10快捷键Ctrl+Shift+F的冲突问题](https://blog.csdn.net/qq_34805289/article/details/70344718)
