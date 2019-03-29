@@ -1,5 +1,10 @@
 # SQL
 
+## 日常开发积累
+
+不要使用数据库关键字作为字段比如
+type change
+
 B - (A ∩ B)
 
 ```sql
@@ -24,6 +29,7 @@ WHERE
         INNER JOIN A_table a ON b.Bid = a.Bid
     )
 ```
+
 平均分大于80分的学生，并按平均分分数从大到小排列
 
 ```sql
@@ -81,7 +87,7 @@ SET (o.CUSTOMER_ID) = (
 WHERE o.CUSTOMER_ID IS NULL
 ```
 
-MySQL 
+MySQL
 
 ```sql
 UPDATE a_table a,
@@ -258,7 +264,7 @@ comment on column rocky_emp_bonus.company_id is '公司id';
 -- 序列
 create sequence seq_rocky_emp_bonus
 minvalue 1 maxvalue 99999999999999
-start with 100 increment by 1 cache 20;    
+start with 100 increment by 1 cache 20;
 ```
 
 聚集与连接
@@ -270,7 +276,7 @@ start with 100 increment by 1 cache 20;
 SELECT
     e.DEPTNO,
     sum(e.sal),
-    sum(e.sal * eb2.rate) 
+    sum(e.sal * eb2.rate)
 FROM
     ROCKY_EMP e
 LEFT JOIN (
@@ -317,9 +323,9 @@ SELECT
     TOTAL_AMOUNT as 单条合计,
     sum( TOTAL_AMOUNT ) over ( ORDER BY f.id ) AS 成本累计 
 FROM
-    "CS_DISPATCH_FEE" f 
+    "CS_DISPATCH_FEE" f
 WHERE
-    fee_name = '运费' 
+    fee_name = '运费'
 ORDER BY
     f.id
 ```
