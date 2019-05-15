@@ -65,3 +65,52 @@ File->Settings-> Keymap-> 搜索 Show In Explorer -> 将快捷键设置为F3 。
 Add unambiguous imports on the fly 自动导入依赖  
 
 Optimize imports on the fly (for current project)   优化导入和智能删除无关依赖
+
+## 使用场景
+
+### 神奇的Inject Lanuage
+
+如果使用IDEA在编写JSON字符串的时候，要一个一个\去转义双引号。
+
+使用Inject Language帮我们自动转义双引号
+
+```java
+String jsonString = "";
+```
+
+1. 先将焦点定位到双引号里面，使用alt+enter快捷键弹出Inject Language 视图，并选中
+
+2. 选择后，切记，要直接按下enter回车键，才能弹出Inject Language列表。在列表中选择json组件
+
+3. 选择完后。鼠标焦点自动会定位在双引号里面，这个时候你再使用alt+enter就可以看到
+
+4. 选中Edit JSON Fragment并回车，就可以看到编辑JSON文件的视图
+
+5. 关闭可以使用Ctrl+F4
+
+### 行尾加分号
+
+```java
+String s = "test";
+if (s == null)
+```
+
+这段代码，我们还需要为if语句加上大括号才能编辑通过，这个时候你直接输入Ctrl+Shift+Enter，IDEA会自动帮你收尾，加上大括号的。
+
+### 批量修改
+
+```java
+HashMap map = new HashMap();
+map.put("goodsCategoryId", "49CE2DD4CBD9EDF0E050AA0A1B2B1CC1");
+map.put("name", "生化危机-终章2");
+map.put("price", "36.8");
+map.put("content", "南国影视城，周六18：30");
+```
+
+1. 使用Ctrl+W选中map这个文本
+
+2. 依次使用5次Alt+J快捷键，逐个选中，这样五个文本就都被选中并高亮起来了。
+
+参考链接
+
+[Intellij IDEA神器居然还有这些小技巧](https://blog.csdn.net/linsongbin1/article/details/80211919)
